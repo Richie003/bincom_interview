@@ -5,8 +5,11 @@ from .models import *
 # Create your views here.
 def ResultIndex(request):
     polling_obj = Polling_unit.objects.all()[:1]
-    lga_obj = L
-    context = {'data':polling_obj}
+    lga_obj = LGA.objects.all()
+    context = {
+        'data':polling_obj,
+        'lga_data': lga_obj
+    }
     return render(request, 'index.html', context)
 
 def get_lga(request):
