@@ -97,12 +97,14 @@
             Sum Total for LGA
         </h1>
     </div>
+    {%csrf_token%}
     <div class="row">
         <div class="col-sm-2">
                 <select class="form-control form-control-sm" id="lga-select">
                     <option>Select LGA</option>
-                    <option value="EPE">EPE</option>
-                    <option value="Ibeju">Ibeju</option>
+                    {%for lga in lga_data%}
+                    <option value="{{lga.lga_name}}">{{lga.lga_name}}</option>
+                    {%endfor%}
                 </select>
         </div>
         <div class="col-sm-10">
@@ -114,8 +116,8 @@
                 </tr></thead>
                 <tbody>
                   <tr>
-                    <td>John</td>
-                    <td>Approved</td>
+                    <td id="table-name">John</td>
+                    <td id="table-sum">Approved</td>
                   </tr>
                 </tbody>
               </table>
@@ -130,17 +132,23 @@
 <!--  -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.js" integrity="sha512-Xo0Jh8MsOn72LGV8kU5LsclG7SUzJsWGhXbWcYs2MAmChkQzwiW/yTQwdJ8w6UA9C6EVG18GHb/TrYpYCjyAQw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    $(document).on('select', '#lga-select', (e)=>{
+    console.log($('#lga-select').val());
+    $(document).on('change', '#lga-select', () => {
         $.ajax({
             type:"POST",
-            url:'lgas/',
+            url:'lga/',
             data:{
                 user_choice: $('#lga-select').val(),
                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
             },
             success: function(results){
-                console.log(results)
+                $('#table-name').empty();
+                for(var key in results.data){
+                    $('#table-name').append(results.data[key].lga_name)
+                }
             }
         })
     })

@@ -15,5 +15,6 @@ def ResultIndex(request):
 def get_lga(request):
     if request.method == 'POST':
         choice =request.POST.get('user_choice')
-        # obj = Polling_unit.objects.filter(choice)
-        return JsonResponse({'data': choice}, safe=False)
+        print(choice)
+        obj = LGA.objects.filter(lga_name=choice)
+        return JsonResponse({'data': list(obj.values())})

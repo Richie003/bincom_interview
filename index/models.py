@@ -75,7 +75,7 @@ class Party(models.Model):
 class Polling_unit(models.Model):
     polling_unit_id = models.IntegerField(null=True)
     ward_id = models.IntegerField(null=True)
-    lga_id = models.IntegerField(null=True)
+    lga_id = models.IntegerField(null=True, blank=True)
     uniquewardid = models.IntegerField(null=True)
     polling_unit_number = models.CharField(default="", max_length=50, null=True)
     # polling_unit_number = models.CharField(default="", max_length=50, null=True)
@@ -86,6 +86,9 @@ class Polling_unit(models.Model):
     entered_by_user = models.CharField(default="", max_length=50)
     date_entered = models.DateTimeField()
     user_ip_address = models.CharField(default="", max_length=50)
+
+    def __str__(self):
+        return str(self.lga_id)
 
 class States(models.Model):
     state_name = models.CharField(max_length=50, null=True)
