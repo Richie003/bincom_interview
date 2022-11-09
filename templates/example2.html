@@ -3,8 +3,28 @@
 Something
 {%endblock title%}
 <!--  -->
-{%block contents%}
+{%block links%}
+<style>
 
+</style>
+{%endblock links%}
+<!--  -->
+{%block contents%}
+<div class="custom-modal">
+  <div class="container-sm border mt-3">
+    <div class="text-end" style="transform: rotateX(45deg);">
+      <h4>X</h4>
+    </div>
+    <form class="ui form container px-3 py-1" method="POST">
+      {%csrf_token%}
+      <div class="ui dividing header mt-1">Party Results</div>
+      <div class="field">
+        {{form.as_p}}
+      </div>
+        <button type="submit" class="ui button">Submit</button>
+      </form>
+  </div>
+</div>
 {%endblock contents%}
 <!-- JS scripts -->
 {%block scripts%}

@@ -1,6 +1,7 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from .models import *
+from .forms import *
 
 # Create your views here.
 def ResultIndex(request):
@@ -18,3 +19,9 @@ def get_lga(request):
         choice = int(choice)
         obj = Polling_unit.objects.filter(lga_id=choice)
         return JsonResponse({'data': len(obj)})
+
+
+def PartyIndex(request, *args, **kwargs):
+    form = Announced_pu_results_form
+    context = {'form':form}
+    return render(request, 'example2.html', context)
