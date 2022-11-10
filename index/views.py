@@ -23,5 +23,9 @@ def get_lga(request):
 
 def PartyIndex(request, *args, **kwargs):
     form = Announced_pu_results_form
-    context = {'form':form}
+    party_results = Announced_pu_results.objects.all()
+    context = {
+        'form':form,
+         'party_data': party_results
+    }
     return render(request, 'example2.html', context)

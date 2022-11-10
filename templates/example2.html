@@ -5,17 +5,67 @@ Something
 <!--  -->
 {%block links%}
 <style>
+body, html{
+  height: 0% !important;
+}
 
+.modalCont{
+  animation: 3s slideout;
+  position: fixed;
+  right: 0;
+  left: 0;
+  transform: translateY(-572px);
+  background: #f4f4f4;
+}
+
+.triggerin {
+    position: fixed;
+    bottom: 0;
+}
+.display-modal{
+  animation: 1.9s slidein;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: #f4f4f4;
+}
+
+.text-end{
+  cursor: pointer;
+}
+
+@keyframes slidein{
+  from{
+    transform: translateY(-572px);
+  }
+  to{
+    transform: translateY(0px);
+  }
+}
+
+
+@keyframes slideout{
+  from{
+    transform: translateY(0px);
+  }
+  to{
+    transform: translateY(-568px);
+  }
+}
+
+input:focus{
+  border: 1px solid #c0bbbb !important;
+}
 </style>
 {%endblock links%}
 <!--  -->
 {%block contents%}
-<div class="custom-modal">
-  <div class="container-sm border mt-3">
-    <div class="text-end" style="transform: rotateX(45deg);">
+  <div class="container-sm border mt-3 modalCont" id="inner-cont">
+    <div class="text-end" id="close-cont" style="transform: rotateX(45deg);">
       <h4>X</h4>
     </div>
-    <form class="ui form container px-3 py-1" method="POST">
+    <form class="ui form container px-3 py-1 mb-2" method="POST">
       {%csrf_token%}
       <div class="ui dividing header mt-1">Party Results</div>
       <div class="field">
@@ -24,11 +74,85 @@ Something
         <button type="submit" class="ui button">Submit</button>
       </form>
   </div>
+<section>
+  <section class="container py-3 mt-2">
+    <div class="data-container text-center">
+        <h1 class="p-part display-5">
+            Polling Unit Party Results
+        </h1>
+    </div>
+    {%csrf_token%}
+    <div class="mt-3">
+        <div class="">
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <!-- <th scope="col">LGA</th> -->
+                  <th scope="col">Polling Unit uniqueid</th>
+                  <th scope="col">Party abbreviation</th>
+                  <th scope="col">Party Score</th>
+                  <th scope="col">User</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">IPAddress</th>
+                </tr></thead>
+                <tbody>
+                  {%for obj in party_data%}
+                  <tr>
+                    <td class="table-data">
+                      {{obj.polling_unit_uniqueid}}
+                    </td>
+                    <td class="table-data">
+                      {{obj.party_abbreviation}}
+                    </td>
+                    <td class="table-data">
+                      {{obj.party_score}}
+                    </td>
+                    <td class="table-data">
+                      {{obj.entered_by_user}}
+                    </td>
+                    <td class="table-data">
+                      {{obj.date_entered}}
+                    </td>
+                    <td class="table-data">
+                      {{obj.user_ip_address}}
+                    </td>
+                  </tr>
+                  {%endfor%}
+                </tbody>
+              </table>
+        </div>
+    </div>
+</section>
+</section>
+<div class="my-4 px-2 triggerin">
+  <button class="ui button black" id="addRes">Add</button>
 </div>
 {%endblock contents%}
 <!-- JS scripts -->
 {%block scripts%}
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  let  TriggerButton = document.getElementById('addRes')
+  let  modalContainer = document.getElementById('inner-cont')
+  let  CloseButton = document.getElementById('close-cont')
+  TriggerButton.addEventListener('click', () => {
+    if(modalContainer.classList.contains('modalCont')){
+      modalContainer.classList.remove('modalCont')
+      modalContainer.classList.add('display-modal')
+      TriggerButton.classList.add('d-none')
+    }
+  })
+
+  CloseButton.addEventListener('click', () => {
+    if(modalContainer.classList.contains('display-modal')){
+      modalContainer.classList.remove('display-modal')
+      modalContainer.classList.add('modalCont')
+      TriggerButton.classList.remove('d-none')
+    }
+  })
+
+</script>
 
 {%endblock scripts%}
